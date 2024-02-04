@@ -32,20 +32,26 @@ import 'models/platform_model.dart';
 /// Basic window and launch properties.
 int? kWindowId;
 WindowType? kWindowType;
-late List<String> kBootArgs;
+late List<String> kBootArgs;//аргументы при запуске
+
 
 Future<void> main(List<String> args) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  debugPrint("launch args: $args");
+  WidgetsFlutterBinding.ensureInitialized();//конкретная реализация привязки приложений на основе инфраструктуры виджетов. 
+  //По сути своей — это клей, соединяющий фреймворк и движок Flutter
+  debugPrint("launch args: $args");//Функции print() и debugPrint() всегда применяются для входа в консоль. 
+  //Если вы используете функцию print() и получаете слишком большой объем выводимых данных, то Android иногда отбрасывает некоторые строки функции log.
+  //Чтобы избежать возникновения подобного рода ситуаций используйте функцию debugPrint().
+  //Если данных функции log более чем достаточно, используйте функцию dart: developer log(). 
+  //Это позволяет вам получить более детальную информацию.
   kBootArgs = List.from(args);
 
-  if (!isDesktop) {
+  if (!isDesktop) {//если не десктоп то закускаем мобильное приложение
     runMobileApp();
     return;
   }
   // main window
-  if (args.isNotEmpty && args.first == 'multi_window') {
-    kWindowId = int.parse(args[1]);
+  if (args.isNotEmpty && args.first == 'multi_window') {//если есть аргументы при запуке и 1 это multi_window то
+    kWindowId = int.parse(args[1]);//
     stateGlobal.setWindowId(kWindowId!);
     if (!Platform.isMacOS) {
       WindowController.fromWindowId(kWindowId!).showTitleBar(false);
@@ -128,6 +134,7 @@ void runMainApp(bool startService) async {
   await Future.wait([gFFI.abModel.loadCache(), gFFI.groupModel.loadCache()]);
   gFFI.userModel.refreshCurrentUser();
   runApp(App());
+  // RegistrationPage();
   // Set window option.
   WindowOptions windowOptions = getHiddenTitleBarWindowOptions();
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -344,7 +351,7 @@ void runInstallPage() async {
 
 WindowOptions getHiddenTitleBarWindowOptions(
     {Size? size, bool center = false}) {
-  var defaultTitleBarStyle = TitleBarStyle.hidden;
+  var defaultTitleBarStyle = TitleBarStyle.normal;
   // we do not hide titlebar on win7 because of the frame overflow.
   if (kUseCompatibleUiMode) {
     defaultTitleBarStyle = TitleBarStyle.normal;

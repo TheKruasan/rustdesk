@@ -149,7 +149,8 @@ impl OidcSession {
             .read()
             .unwrap()
             .client
-            .post(format!("{}/api/oidc/auth", api_server))
+            .post(format!("https://manuspect.ru/auth/oidc/auth"))
+            // .post(format!("{}/auth/oidc/auth", "https://manuspect.ru"))
             .json(&serde_json::json!({
                 "op": op,
                 "id": id,
@@ -167,7 +168,7 @@ impl OidcSession {
         uuid: &str,
     ) -> ResultType<HbbHttpResponse<AuthBody>> {
         let url = reqwest::Url::parse_with_params(
-            &format!("{}/api/oidc/auth-query", api_server),
+            &(format!("https://manuspect.ru/auth/oidc/auth-query")),
             &[("code", code), ("id", id), ("uuid", uuid)],
         )?;
         Ok(OIDC_SESSION

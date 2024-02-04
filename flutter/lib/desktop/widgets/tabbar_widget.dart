@@ -227,7 +227,7 @@ typedef TabMenuBuilder = Widget Function(String key);
 typedef LabelGetter = Rx<String> Function(String key);
 
 /// [_lastClickTime], help to handle double click
-int _lastClickTime =
+double _lastClickTime =
     DateTime.now().millisecondsSinceEpoch - bind.getDoubleClickTime() - 1000;
 
 // ignore: must_be_immutable
@@ -379,7 +379,7 @@ class DesktopTab extends StatelessWidget {
                     ? () {
                         final current = DateTime.now().millisecondsSinceEpoch;
                         final elapsed = current - _lastClickTime;
-                        _lastClickTime = current;
+                        _lastClickTime = current.toDouble();
                         if (elapsed < bind.getDoubleClickTime()) {
                           // onDoubleTap
                           toggleMaximize(isMainWindow)

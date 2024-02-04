@@ -10,6 +10,7 @@ import 'package:flutter_hbb/common/widgets/setting_widgets.dart';
 import 'package:flutter_hbb/consts.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_home_page.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_tab_page.dart';
+import 'package:flutter_hbb/desktop2/pages/registration_page.dart';
 import 'package:flutter_hbb/models/desktop_render_texture.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/server_model.dart';
@@ -1381,9 +1382,10 @@ class _AccountState extends State<_Account> {
     return Obx(() => _Button(
         gFFI.userModel.userName.value.isEmpty ? 'Login' : 'Logout',
         () => {
-              gFFI.userModel.userName.value.isEmpty
-                  ? loginDialog()
-                  : logOutConfirmDialog()
+          Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()))
+              // gFFI.userModel.userName.value.isEmpty
+                  // ? loginDialog()
+                  // : logOutConfirmDialog()
             }));
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter_hbb/common/formatter/id_formatter.dart';
 import 'package:flutter_hbb/common/widgets/peer_card.dart';
 import 'package:flutter_hbb/common/widgets/peers_view.dart';
 import 'package:flutter_hbb/desktop/widgets/popup_menu.dart';
+import 'package:flutter_hbb/desktop2/pages/registration_page.dart';
 import 'package:flutter_hbb/models/ab_model.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import '../../desktop/widgets/material_mod_popup_menu.dart' as mod_menu;
@@ -41,7 +42,9 @@ class _AddressBookState extends State<AddressBook> {
         if (!gFFI.userModel.isLogin) {
           return Center(
               child: ElevatedButton(
-                  onPressed: loginDialog, child: Text(translate("Login"))));
+                  onPressed: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()));
+                  }, child: Text(translate("Login"))));
         } else {
           if (gFFI.abModel.abLoading.value && gFFI.abModel.emtpy) {
             return const Center(

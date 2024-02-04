@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hbb/common/hbbs/hbbs.dart';
+import 'package:flutter_hbb/desktop2/pages/registration_page.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/user_model.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../common.dart';
 import './dialog.dart';
 
+TextStyle style3 =
+    const TextStyle(fontSize: 16, fontFamily: 'Manrope', color: Colors.white);
 const kOpSvgList = [
   'github',
   'gitlab',
@@ -80,14 +83,24 @@ class ButtonOP extends StatelessWidget {
         toCapitalized(op);
     return Row(children: [
       Container(
-        height: height,
-        width: 200,
-        child: Obx(() => ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: curOP.value.isEmpty || curOP.value == op
-                  ? primaryColor
-                  : Colors.grey,
-            ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+        // alignment: Alignment.center,
+        // height: height,
+        // width: 200,
+        width: 398,
+        height: 52,
+        child: Obx(
+          () => ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      side: BorderSide(
+                          color: Color.fromARGB(157, 200, 192, 209)))),
+              backgroundColor:
+                  MaterialStatePropertyAll(Color.fromARGB(0, 119, 0, 255)),
+              overlayColor:
+                  MaterialStatePropertyAll(Color.fromARGB(157, 200, 192, 209)),
+            ),
             onPressed: curOP.value.isEmpty || curOP.value == op ? onTap : null,
             child: Row(
               children: [
@@ -107,7 +120,37 @@ class ButtonOP extends StatelessWidget {
                   ),
                 ),
               ],
-            ))),
+            ),
+          ),
+
+          // () => ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: curOP.value.isEmpty || curOP.value == op
+          //         ? const Color.fromARGB(0, 158, 158, 158)
+          //         : const Color.fromARGB(0, 158, 158, 158),
+          //   ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+          //   onPressed: curOP.value.isEmpty || curOP.value == op ? onTap : null,
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //         width: 30,
+          //         child: _IconOP(
+          //           op: op,
+          //           icon: icon,
+          //           margin: EdgeInsets.only(right: 5),
+          //         ),
+          //       ),
+          //       Expanded(
+          //         child: FittedBox(
+          //           fit: BoxFit.scaleDown,
+          //           child: Center(
+          //               child: Text('${translate("Continue with")} $opLabel')),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ),
       ),
     ]);
   }
@@ -309,8 +352,8 @@ class LoginWidgetOP extends StatelessWidget {
       children.removeLast();
     }
     return SingleChildScrollView(
-        child: Container(
-            width: 200,
+        child: Container( 
+          width: 398,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -575,6 +618,7 @@ Future<bool?> loginDialog() async {
     );
     final titlePadding = EdgeInsets.fromLTRB(MyTheme.dialogPadding, 0, 0, 0);
 
+    // return RegistrationPage();
     return CustomAlertDialog(
       title: title,
       titlePadding: titlePadding,
@@ -673,7 +717,9 @@ Future<bool?> verificationCodeDialog(
       if (preCode.length != 6 && code.text.length == 6) {
         onVerify();
       }
-      if (!isEmailVerification && preCode.length != 10 && code.text.length == 10) {
+      if (!isEmailVerification &&
+          preCode.length != 10 &&
+          code.text.length == 10) {
         onVerify();
       }
       preCode = code.text;

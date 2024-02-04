@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hbb/common/hbbs/hbbs.dart';
 import 'package:flutter_hbb/common/widgets/login.dart';
 import 'package:flutter_hbb/common/widgets/peers_view.dart';
+import 'package:flutter_hbb/desktop2/pages/registration_page.dart';
 import 'package:get/get.dart';
 
 import '../../common.dart';
@@ -34,7 +35,9 @@ class _MyGroupState extends State<MyGroup> {
       if (!gFFI.userModel.isLogin) {
         return Center(
             child: ElevatedButton(
-                onPressed: loginDialog, child: Text(translate("Login"))));
+                onPressed: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()));
+                }, child: Text(translate("Login"))));
       } else if (gFFI.groupModel.groupLoading.value && gFFI.groupModel.emtpy) {
         return const Center(
           child: CircularProgressIndicator(),
