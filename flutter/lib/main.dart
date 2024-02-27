@@ -37,13 +37,13 @@ WindowType? kWindowType;
 late List<String> kBootArgs;//аргументы при запуске
 
 
-Future<void> main(List<String> args) async {
+Future<void> main(List<String> args) async { 
   WidgetsFlutterBinding.ensureInitialized();//конкретная реализация привязки приложений на основе инфраструктуры виджетов. 
   //По сути своей — это клей, соединяющий фреймворк и движок Flutter
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('My App');
     // setWindowMaxSize(const Size(max_width, max_height));
-    setWindowMinSize(const Size(1100, 790));
+    setWindowMinSize(const Size(1200, 720));
   }
   debugPrint("launch args: $args");//Функции print() и debugPrint() всегда применяются для входа в консоль. 
   //Если вы используете функцию print() и получаете слишком большой объем выводимых данных, то Android иногда отбрасывает некоторые строки функции log.
@@ -358,7 +358,7 @@ void runInstallPage() async {
 
 WindowOptions getHiddenTitleBarWindowOptions(
     {Size? size, bool center = false}) {
-  var defaultTitleBarStyle = TitleBarStyle.normal;
+  var defaultTitleBarStyle = TitleBarStyle.hidden;
   // we do not hide titlebar on win7 because of the frame overflow.
   if (kUseCompatibleUiMode) {
     defaultTitleBarStyle = TitleBarStyle.normal;

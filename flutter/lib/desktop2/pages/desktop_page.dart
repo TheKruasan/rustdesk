@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hbb/common.dart';
 import 'package:flutter_hbb/desktop2/widgets/user_info.dart';
@@ -55,24 +57,48 @@ class _RemoteAccessPageState extends State<RemoteAccessPage> {
     );
   }
 
-  Widget topMenu(BuildContext context) { 
-        return Container(
-            height: 60,
-            decoration: const BoxDecoration(
+  Widget topMenu(BuildContext context) {
+    if (Platform.isLinux || Platform.isWindows) {
+      return Container(
+        height: 60,
+        child: DragToResizeArea(
+          // resizeEdgeSize: 6,
+          child: DragToMoveArea(
+            child: Container( 
               color: Color(0xff0B0C10),
+               
             ),
-          );
-        // : Obx(
-        //     () => DragToResizeArea(
-        //       resizeEdgeSize: stateGlobal.resizeEdgeSize.value,
-        //       child: Container(
-        //         height: 60,
-        //         decoration: const BoxDecoration(
-        //           color: Color(0xff0B0C10),
-        //         ),
-        //       ),
-        //     ),
-        //   );
+          ),
+        ),
+      );
+    }
+    return Container();
+
+    // Widget topMenu(BuildContext context) {
+    //   return DragToMoveArea(
+    //     child: Container(
+    //       height: 60,
+    //       decoration: const BoxDecoration(
+    //         color: Color(0xff0B0C10),
+    //       ),
+    //       child: Row(
+    //         children: [
+    //           Icon(Icons.add),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    //   // : Obx(
+    //   //     () => DragToResizeArea(
+    //   //       resizeEdgeSize: stateGlobal.resizeEdgeSize.value,
+    //   //       child: Container(
+    //   //         height: 60,
+    //   //         decoration: const BoxDecoration(
+    //   //           color: Color(0xff0B0C10),
+    //   //         ),
+    //   //       ),
+    //   //     ),
+    //   //   );
   }
 
   Widget leftMenu(BuildContext context) {
