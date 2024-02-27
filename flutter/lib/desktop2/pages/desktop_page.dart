@@ -1,12 +1,8 @@
 import 'dart:io';
-import 'dart:math';
-
-import 'package:bot_toast/bot_toast.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hbb/common.dart';
 import 'package:flutter_hbb/desktop2/widgets/user_info.dart';
-import 'package:flutter_hbb/models/state_model.dart';
-import 'package:get/get.dart';
+import 'package:flutter_hbb/desktop2/widgets/window_buttons.dart';
 import 'package:window_manager/window_manager.dart';
 import '../models/bar_model.dart';
 
@@ -61,44 +57,27 @@ class _RemoteAccessPageState extends State<RemoteAccessPage> {
     if (Platform.isLinux || Platform.isWindows) {
       return Container(
         height: 60,
-        child: DragToResizeArea(
-          // resizeEdgeSize: 6,
+        width: double.infinity, 
           child: DragToMoveArea(
-            child: Container( 
-              color: Color(0xff0B0C10),
-               
+            child: WindowTitleBarBox(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: Color(0xff0B0C10),
+                    ),
+                  ),
+                  Container(
+                    color: Color(0xff0B0C10),
+                    child: WindowButtons(),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
       );
     }
     return Container();
-
-    // Widget topMenu(BuildContext context) {
-    //   return DragToMoveArea(
-    //     child: Container(
-    //       height: 60,
-    //       decoration: const BoxDecoration(
-    //         color: Color(0xff0B0C10),
-    //       ),
-    //       child: Row(
-    //         children: [
-    //           Icon(Icons.add),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    //   // : Obx(
-    //   //     () => DragToResizeArea(
-    //   //       resizeEdgeSize: stateGlobal.resizeEdgeSize.value,
-    //   //       child: Container(
-    //   //         height: 60,
-    //   //         decoration: const BoxDecoration(
-    //   //           color: Color(0xff0B0C10),
-    //   //         ),
-    //   //       ),
-    //   //     ),
-    //   //   );
   }
 
   Widget leftMenu(BuildContext context) {
