@@ -61,13 +61,13 @@ class DesktopSettingPage extends StatefulWidget {
     if (page >= _kPageCount) return;
     try {
       if (Get.isRegistered<PageController>(tag: _kSettingPageControllerTag)) {
-        DesktopTabPage.onAddSetting(initialPage: page);
+        // DesktopTabPage.onAddSetting(initialPage: page);
         PageController controller = Get.find(tag: _kSettingPageControllerTag);
         RxInt selectedIndex = Get.find(tag: _kSettingPageIndexTag);
         selectedIndex.value = page;
         controller.jumpToPage(page);
       } else {
-        DesktopTabPage.onAddSetting(initialPage: page);
+        // DesktopTabPage.onAddSetting(initialPage: page);
       }
     } catch (e) {
       debugPrintStack(label: '$e');
@@ -1382,7 +1382,7 @@ class _AccountState extends State<_Account> {
     return Obx(() => _Button(
         gFFI.userModel.userName.value.isEmpty ? 'Login' : 'Logout',
         () => {
-          Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()))
+          // Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage(initialPage: 0,)))
               // gFFI.userModel.userName.value.isEmpty
                   // ? loginDialog()
                   // : logOutConfirmDialog()

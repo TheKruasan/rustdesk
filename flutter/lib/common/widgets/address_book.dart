@@ -43,7 +43,7 @@ class _AddressBookState extends State<AddressBook> {
           return Center(
               child: ElevatedButton(
                   onPressed: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()));
+                    // Navigator.push(context,MaterialPageRoute(builder: (context)=> RegistrationPage()));
                   }, child: Text(translate("Login"))));
         } else {
           if (gFFI.abModel.abLoading.value && gFFI.abModel.emtpy) {

@@ -290,7 +290,8 @@ class DesktopTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Obx(() => Offstage(
+      Obx(
+        () => Offstage(
           offstage: !stateGlobal.showTabBar.isTrue ||
               (kUseCompatibleUiMode && isHideSingleItem()),
           child: SizedBox(
@@ -306,7 +307,9 @@ class DesktopTab extends StatelessWidget {
                 ),
               ],
             ),
-          ))),
+          ),
+        ),
+      ),
       Expanded(
           child: pageViewBuilder != null
               ? pageViewBuilder!(_buildPageView())
@@ -373,78 +376,80 @@ class DesktopTab extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-            child: GestureDetector(
-                // custom double tap handler
-                onTap: showMaximize
-                    ? () {
-                        final current = DateTime.now().millisecondsSinceEpoch;
-                        final elapsed = current - _lastClickTime;
-                        _lastClickTime = current.toDouble();
-                        if (elapsed < bind.getDoubleClickTime()) {
-                          // onDoubleTap
-                          toggleMaximize(isMainWindow)
-                              .then((value) => stateGlobal.setMaximized(value));
-                        }
-                      }
-                    : null,
-                onPanStart: (_) => startDragging(isMainWindow),
-                child: Row(
-                  children: [
+          child: GestureDetector(
+            // custom double tap handler
+            onTap: showMaximize
+                ? () {
+                    final current = DateTime.now().millisecondsSinceEpoch;
+                    final elapsed = current - _lastClickTime;
+                    _lastClickTime = current.toDouble();
+                    if (elapsed < bind.getDoubleClickTime()) {
+                      // onDoubleTap
+                      toggleMaximize(isMainWindow)
+                          .then((value) => stateGlobal.setMaximized(value));
+                    }
+                  }
+                : null,
+            onPanStart: (_) => startDragging(isMainWindow),
+            child: Row(
+              children: [
+                Offstage(
+                    offstage: !Platform.isMacOS,
+                    child: const SizedBox(
+                      width: 78,
+                    )),
+                Offstage(
+                  offstage: kUseCompatibleUiMode || Platform.isMacOS,
+                  child: Row(children: [
                     Offstage(
-                        offstage: !Platform.isMacOS,
-                        child: const SizedBox(
-                          width: 78,
+                        offstage: !showLogo,
+                        child: SvgPicture.asset(
+                          'assets/logo.svg',
+                          width: 16,
+                          height: 16,
                         )),
                     Offstage(
-                      offstage: kUseCompatibleUiMode || Platform.isMacOS,
-                      child: Row(children: [
-                        Offstage(
-                            offstage: !showLogo,
-                            child: SvgPicture.asset(
-                              'assets/logo.svg',
-                              width: 16,
-                              height: 16,
-                            )),
-                        Offstage(
-                            offstage: !showTitle,
-                            child: const Text(
-                              "RustDesk",
-                              style: TextStyle(fontSize: 13),
-                            ).marginOnly(left: 2))
-                      ]).marginOnly(
-                        left: 5,
-                        right: 10,
-                      ),
+                        offstage: !showTitle,
+                        child: const Text(
+                          "RustDesk",
+                          style: TextStyle(fontSize: 13),
+                        ).marginOnly(left: 2))
+                  ]).marginOnly(
+                    left: 5,
+                    right: 10,
+                  ),
+                ),
+                Expanded(
+                  child: Listener(
+                    // handle mouse wheel
+                    onPointerSignal: (e) {
+                      if (e is PointerScrollEvent) {
+                        final sc = controller.state.value.scrollController;
+                        if (!sc.canScroll) return;
+                        _scrollDebounce.call(() {
+                          sc.animateTo(sc.offset + e.scrollDelta.dy,
+                              duration: Duration(milliseconds: 200),
+                              curve: Curves.ease);
+                        });
+                      }
+                    },
+                    child: _ListView(
+                      controller: controller,
+                      tabBuilder: tabBuilder,
+                      tabMenuBuilder: tabMenuBuilder,
+                      labelGetter: labelGetter,
+                      maxLabelWidth: maxLabelWidth,
+                      selectedTabBackgroundColor: selectedTabBackgroundColor,
+                      unSelectedTabBackgroundColor:
+                          unSelectedTabBackgroundColor,
+                      selectedBorderColor: selectedBorderColor,
                     ),
-                    Expanded(
-                        child: Listener(
-                            // handle mouse wheel
-                            onPointerSignal: (e) {
-                              if (e is PointerScrollEvent) {
-                                final sc =
-                                    controller.state.value.scrollController;
-                                if (!sc.canScroll) return;
-                                _scrollDebounce.call(() {
-                                  sc.animateTo(sc.offset + e.scrollDelta.dy,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.ease);
-                                });
-                              }
-                            },
-                            child: _ListView(
-                              controller: controller,
-                              tabBuilder: tabBuilder,
-                              tabMenuBuilder: tabMenuBuilder,
-                              labelGetter: labelGetter,
-                              maxLabelWidth: maxLabelWidth,
-                              selectedTabBackgroundColor:
-                                  selectedTabBackgroundColor,
-                              unSelectedTabBackgroundColor:
-                                  unSelectedTabBackgroundColor,
-                              selectedBorderColor: selectedBorderColor,
-                            ))),
-                  ],
-                ))),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         // hide simulated action buttons when we in compatible ui mode, because of reusing system title bar.
         WindowActionPanel(
           isMainWindow: isMainWindow,

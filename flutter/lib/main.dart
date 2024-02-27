@@ -13,6 +13,7 @@ import 'package:flutter_hbb/desktop/screen/desktop_file_transfer_screen.dart';
 import 'package:flutter_hbb/desktop/screen/desktop_port_forward_screen.dart';
 import 'package:flutter_hbb/desktop/screen/desktop_remote_screen.dart';
 import 'package:flutter_hbb/desktop/widgets/refresh_wrapper.dart';
+import 'package:flutter_hbb/desktop2/pages/desktop_page.dart';
 import 'package:flutter_hbb/models/state_model.dart';
 import 'package:flutter_hbb/plugin/handlers.dart';
 import 'package:flutter_hbb/utils/multi_window_manager.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:window_size/window_size.dart';
 
 // import 'package:window_manager/window_manager.dart';
 
@@ -38,6 +40,11 @@ late List<String> kBootArgs;//аргументы при запуске
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();//конкретная реализация привязки приложений на основе инфраструктуры виджетов. 
   //По сути своей — это клей, соединяющий фреймворк и движок Flutter
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle('My App');
+    // setWindowMaxSize(const Size(max_width, max_height));
+    setWindowMinSize(const Size(1100, 790));
+  }
   debugPrint("launch args: $args");//Функции print() и debugPrint() всегда применяются для входа в консоль. 
   //Если вы используете функцию print() и получаете слишком большой объем выводимых данных, то Android иногда отбрасывает некоторые строки функции log.
   //Чтобы избежать возникновения подобного рода ситуаций используйте функцию debugPrint().
@@ -133,7 +140,7 @@ void runMainApp(bool startService) async {
   }
   await Future.wait([gFFI.abModel.loadCache(), gFFI.groupModel.loadCache()]);
   gFFI.userModel.refreshCurrentUser();
-  runApp(App());
+  runApp(App());//TODO 
   // RegistrationPage();
   // Set window option.
   WindowOptions windowOptions = getHiddenTitleBarWindowOptions();
@@ -418,8 +425,8 @@ class _AppState extends State<App> {
           theme: MyTheme.lightTheme,
           darkTheme: MyTheme.darkTheme,
           themeMode: MyTheme.currentThemeMode(),
-          home: isDesktop
-              ? const DesktopTabPage()
+          home: isDesktop//TODO
+              ? const RemoteAccessPage()
               : isWeb
                   ? WebHomePage()
                   : HomePage(),
